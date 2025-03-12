@@ -48,6 +48,8 @@ const App: React.FC = () => {
       ) : (
         selectedModel && (
           <ChatInterface 
+            availableModels={availableModels}
+            initialModel={selectedModel}
             onBackToHome={handleBackToHome}
           />
         )
