@@ -7,7 +7,7 @@ interface TokenInfo {
   available: number;
   total: number;
   refreshTime: string;
-  lastRefresh?: string; // stored as ISO string for localStorage
+  lastRefresh?: string;
 }
 
 export interface ChatModel {
@@ -19,8 +19,9 @@ export interface ChatModel {
   getResponse: (request: string) => Promise<string>;
 }
 
+// Returns model response from openRouter based on the model
 async function getModelResponse(request: string, model: string): Promise<string> {
-  const response = await fetch('https://compare-chatbots-q6tn5tzot-matteobombellis-projects.vercel.app', {
+  const response = await fetch('https://compare-chatbots-q76g1qj74-matteobombellis-projects.vercel.app/api/proxy', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -49,6 +50,7 @@ async function getModelResponse(request: string, model: string): Promise<string>
   return data.choices[0].message.content;
 }
 
+// Models
 const defaultModels: ChatModel[] = [
   { 
     id: 'model1', 
@@ -100,6 +102,7 @@ const defaultModels: ChatModel[] = [
   },
 ];
 
+// App loading logic
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<'home' | 'chat'>('home');
   const [selectedModel, setSelectedModel] = useState<ChatModel | null>(null);

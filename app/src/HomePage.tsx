@@ -5,7 +5,7 @@ interface TokenInfo {
   available: number;
   total: number;
   refreshTime: string;
-  lastRefresh?: string; // stored as ISO string for localStorage
+  lastRefresh?: string;
 }
 
 export interface ChatModel {

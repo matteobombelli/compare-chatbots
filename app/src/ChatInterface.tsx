@@ -17,7 +17,7 @@ export interface ChatModel {
   getResponse: (request: string) => Promise<string>;
 }
 
-// Extend Message interface with optional isLoading, isError, and isDisabled properties
+// Interfaces for chat messages
 interface Message {
   id: string;
   modelId: string;
@@ -36,11 +36,12 @@ interface ChatInterfaceProps {
   updateModelTokens: (modelId: string, newTokens: TokenInfo) => void;
 }
 
-// Helper function to estimate token count using word count
+// Helper function for token deductions
 const countTokens = (text: string) => {
   return text.trim().split(/\s+/).length;
 };
 
+// Rating stars component
 const RatingStars: React.FC<{ rating: number; onRate: (value: number) => void }> = ({ rating, onRate }) => {
   const [hover, setHover] = useState(0);
   return (
@@ -64,6 +65,7 @@ const RatingStars: React.FC<{ rating: number; onRate: (value: number) => void }>
   );
 };
 
+
 const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
   availableModels, 
   activeModelIds: initialActiveModelIds, 
@@ -82,8 +84,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [sessionEnded, setSessionEnded] = useState(false);
   const [disabledModelIds, setDisabledModelIds] = useState<string[]>([]);
 
-  // Test prompts for model performance.
-  const fullSuggestionsList = [
+  // User suggestion prompts
+  const suggestionsList = [
     "Explain the theory of relativity in simple terms.",
     "Can you summarize the latest trends in artificial intelligence?",
     "What's the capital of France and why is it significant?",
@@ -101,11 +103,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     "Provide an analysis of the current state of the stock market."
   ];
   const initialDisplayCount = 10;
-  const [displayedSuggestions, setDisplayedSuggestions] = useState<string[]>(fullSuggestionsList.slice(0, initialDisplayCount));
+  const [displayedSuggestions, setDisplayedSuggestions] = useState<string[]>(suggestionsList.slice(0, initialDisplayCount));
   const [nextSuggestionIndex, setNextSuggestionIndex] = useState(initialDisplayCount);
   const [fadingIndices, setFadingIndices] = useState<number[]>([]);
 
-  // Set join timestamps for active models only when a new model is added.
+  // Set join timestamps for active models only when a new model is added
   useEffect(() => {
     setModelJoinTimestamps(prev => {
       const newTimestamps = { ...prev };
@@ -220,8 +222,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         newSuggestions.splice(idx, 1);
         return newSuggestions;
       });
-      if (nextSuggestionIndex < fullSuggestionsList.length) {
-        setDisplayedSuggestions(prev => [...prev, fullSuggestionsList[nextSuggestionIndex]]);
+      if (nextSuggestionIndex < suggestionsList.length) {
+        setDisplayedSuggestions(prev => [...prev, suggestionsList[nextSuggestionIndex]]);
         setNextSuggestionIndex(nextSuggestionIndex + 1);
       }
       setFadingIndices(prev => prev.filter(i => i !== idx));
@@ -264,7 +266,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     };
   }, [showModelSelector]);
 
-  // Refresh token limits every 6 hours (check every minute) and re-enable models if tokens are replenished.
+  // Refresh token limits every 6 hours, count down by minute
   useEffect(() => {
     const interval = setInterval(() => {
       activeModels.forEach(model => {
