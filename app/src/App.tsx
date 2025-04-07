@@ -23,12 +23,12 @@ async function getModelResponse(request: string, model: string): Promise<string>
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer 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',
+      Authorization: 'Bearer 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',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       model: model,
-      max_tokens: 100,
+      max_tokens: 150,
       messages: [
         {
           role: 'user',
@@ -56,7 +56,7 @@ const defaultModels: ChatModel[] = [
     name: 'GPT-4o', 
     icon: 'icon_gpt.jpg', 
     tokens: { available: 800, total: 800, refreshTime: '6h', lastRefresh: new Date().toISOString() },
-    description: 'A powerful language model with cutting-edge reasoning and creativity.',
+    description: 'The most versatile model from OpenAI. Great for a wide range of topics with solid reasoning skills. Best for broad-scope applications.',
     getResponse: (request: string) => getModelResponse(request, "openai/gpt-4o")
   },
   { 
@@ -64,7 +64,7 @@ const defaultModels: ChatModel[] = [
     name: 'Claude 3.7 Sonnet', 
     icon: 'icon_claude.png', 
     tokens: { available: 800, total: 800, refreshTime: '6h', lastRefresh: new Date().toISOString() },
-    description: 'A conversational AI with a poetic touch and robust performance.',
+    description: 'The flagship model from Anthropic, Claude is skilled at coding and different writing styles. Useful for programming and formal writing.',
     getResponse: (request: string) => getModelResponse(request, "anthropic/claude-3.7-sonnet")
   },
   { 
@@ -72,23 +72,23 @@ const defaultModels: ChatModel[] = [
     name: 'Gemini 2.0 Flash', 
     icon: 'icon_gemini.png', 
     tokens: { available: 1600, total: 1600, refreshTime: '6h', lastRefresh: new Date().toISOString() },
-    description: 'A fast and agile model optimized for real-time responses.',
+    description: 'The fastest model from google. Good for users who need quick, concise responses when they work with AI.',
     getResponse: (request: string) => getModelResponse(request, "google/gemini-2.0-flash-001")
   },
   { 
     id: 'model4', 
-    name: 'Deepseek R-1', 
+    name: 'Deepseek V3', 
     icon: 'icon_deepseek.jpeg', 
     tokens: { available: Infinity, total: Infinity, refreshTime: '' },
-    description: 'A free model designed for deep search and information retrieval.',
+    description: 'An open source model geared toward reasoning. Great for high-volume and high-complexity tasks.',
     getResponse: (request: string) => getModelResponse(request, "deepseek/deepseek-v3-base:free") 
   },
   { 
     id: 'model5', 
     name: 'Grok 2', 
     icon: 'icon_grok.png', 
-    tokens: { available: 5, total: 5, refreshTime: '6h', lastRefresh: new Date().toISOString() },
-    description: 'A budget-friendly AI with competitive performance in chat.',
+    tokens: { available: 5, total: 1000, refreshTime: '6h', lastRefresh: new Date().toISOString() },
+    description: 'A budget-friendly model from xAI, trained in maximal truth-seeking. Grok 2 excels at debating from all sides of any argument.',
     getResponse: (request: string) => getModelResponse(request, "x-ai/grok-2-1212") 
   },
   { 
@@ -96,7 +96,7 @@ const defaultModels: ChatModel[] = [
     name: 'Llama 3.2', 
     icon: 'icon_llama.png', 
     tokens: { available: Infinity, total: Infinity, refreshTime: '' },
-    description: 'A freely available model with strong general-purpose capabilities.',
+    description: 'A free general-use model hosted open-source, designed by Meta. A good model for no-cost general responses.',
     getResponse: (request: string) => getModelResponse(request, "meta-llama/llama-3.2-1b-instruct:free")
   },
 ];
