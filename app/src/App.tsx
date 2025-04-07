@@ -20,11 +20,10 @@ export interface ChatModel {
 }
 
 async function getModelResponse(request: string, model: string): Promise<string> {
-  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  const response = await fetch('https://compare-chatbots-q6tn5tzot-matteobombellis-projects.vercel.app', {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer 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',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       model: model,
