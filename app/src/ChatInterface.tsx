@@ -70,7 +70,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onBackToHome,
   updateModelTokens
 }) => {
-  // Use active model IDs from props; these determine which chat windows are active.
+  // Use active model IDs from props.
   const [activeModelIds, setActiveModelIds] = useState<string[]>(initialActiveModelIds);
   // Derive active model objects from availableModels using activeModelIds.
   const activeModels = availableModels.filter(model => activeModelIds.includes(model.id));
@@ -82,7 +82,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [sessionEnded, setSessionEnded] = useState(false);
   const [disabledModelIds, setDisabledModelIds] = useState<string[]>([]);
 
-  // Message suggestions (restored)
+  // Test prompts for model performance.
   const fullSuggestionsList = [
     "Explain the theory of relativity in simple terms.",
     "Can you summarize the latest trends in artificial intelligence?",
@@ -105,16 +105,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [nextSuggestionIndex, setNextSuggestionIndex] = useState(initialDisplayCount);
   const [fadingIndices, setFadingIndices] = useState<number[]>([]);
 
-  // Set join timestamps for active models
+  // Set join timestamps for active models only when a new model is added.
   useEffect(() => {
     setModelJoinTimestamps(prev => {
       const newTimestamps = { ...prev };
+      let changed = false;
       activeModels.forEach(model => {
         if (!newTimestamps[model.id]) {
           newTimestamps[model.id] = new Date();
+          changed = true;
         }
       });
-      return newTimestamps;
+      return changed ? newTimestamps : prev;
     });
   }, [activeModels]);
 
@@ -329,7 +331,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <header className="bg-gray-900 p-4 border-b border-gray-700 flex justify-between items-center select-none transition-all duration-500 ease-in-out">
         <button
           onClick={onBackToHome}
-          className="!text-xl text-blue-400 hover:text-blue-300 transition-all duration-500 ease-in-out select-none"
+          className="text-xl text-blue-400 hover:text-blue-300 transition-all duration-500 ease-in-out select-none"
         >
           <span>&#8249; Back</span>
         </button>

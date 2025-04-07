@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import HomePage from './HomePage';
 import ChatInterface from './ChatInterface';
 
@@ -23,7 +23,7 @@ async function getModelResponse(request: string, model: string): Promise<string>
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer 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',
+      Authorization: 'Bearer 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',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -56,7 +56,7 @@ const defaultModels: ChatModel[] = [
     name: 'GPT-4o', 
     icon: 'icon_gpt.jpg', 
     tokens: { available: 800, total: 800, refreshTime: '6h', lastRefresh: new Date().toISOString() },
-    description: 'The most versatile model from OpenAI. Great for a wide range of topics with solid reasoning skills. Best for broad-scope applications.',
+    description: 'A powerful language model with cutting-edge reasoning and creativity.',
     getResponse: (request: string) => getModelResponse(request, "openai/gpt-4o")
   },
   { 
@@ -64,7 +64,7 @@ const defaultModels: ChatModel[] = [
     name: 'Claude 3.7 Sonnet', 
     icon: 'icon_claude.png', 
     tokens: { available: 800, total: 800, refreshTime: '6h', lastRefresh: new Date().toISOString() },
-    description: 'The flagship model from Anthropic, Claude is skilled at coding and different writing styles. Useful for programming and formal writing.',
+    description: 'A conversational AI with a poetic touch and robust performance.',
     getResponse: (request: string) => getModelResponse(request, "anthropic/claude-3.7-sonnet")
   },
   { 
@@ -72,15 +72,15 @@ const defaultModels: ChatModel[] = [
     name: 'Gemini 2.0 Flash', 
     icon: 'icon_gemini.png', 
     tokens: { available: 1600, total: 1600, refreshTime: '6h', lastRefresh: new Date().toISOString() },
-    description: 'The fastest model from google. Good for users who need quick, concise responses when they work with AI.',
+    description: 'A fast and agile model optimized for real-time responses.',
     getResponse: (request: string) => getModelResponse(request, "google/gemini-2.0-flash-001")
   },
   { 
     id: 'model4', 
-    name: 'Deepseek V3', 
+    name: 'Deepseek R-1', 
     icon: 'icon_deepseek.jpeg', 
     tokens: { available: Infinity, total: Infinity, refreshTime: '' },
-    description: 'An open source model geared toward reasoning. Great for high-volume and high-complexity tasks.',
+    description: 'A free model designed for deep search and information retrieval.',
     getResponse: (request: string) => getModelResponse(request, "deepseek/deepseek-v3-base:free") 
   },
   { 
@@ -88,7 +88,7 @@ const defaultModels: ChatModel[] = [
     name: 'Grok 2', 
     icon: 'icon_grok.png', 
     tokens: { available: 5, total: 5, refreshTime: '6h', lastRefresh: new Date().toISOString() },
-    description: 'A budget-friendly model from xAI, trained in maximal truth-seeking. Grok 2 excels at debating from all sides of any argument.',
+    description: 'A budget-friendly AI with competitive performance in chat.',
     getResponse: (request: string) => getModelResponse(request, "x-ai/grok-2-1212") 
   },
   { 
@@ -96,7 +96,7 @@ const defaultModels: ChatModel[] = [
     name: 'Llama 3.2', 
     icon: 'icon_llama.png', 
     tokens: { available: Infinity, total: Infinity, refreshTime: '' },
-    description: 'A free general-use model hosted open-source, designed by Meta. A good model for no-cost general responses.',
+    description: 'A freely available model with strong general-purpose capabilities.',
     getResponse: (request: string) => getModelResponse(request, "meta-llama/llama-3.2-1b-instruct:free")
   },
 ];
@@ -149,13 +149,13 @@ const App: React.FC = () => {
     localStorage.setItem('chatModelTokens', JSON.stringify(tokenData));
   }, [models]);
 
-  const updateModelTokens = (modelId: string, newTokens: TokenInfo) => {
+  const updateModelTokens = useCallback((modelId: string, newTokens: TokenInfo) => {
     setModels(prev =>
       prev.map(model => 
         model.id === modelId ? { ...model, tokens: newTokens } : model
       )
     );
-  };
+  }, []);
 
   const handleSelectModel = (model: ChatModel) => {
     setSelectedModel(model);
