@@ -23,12 +23,12 @@ async function getModelResponse(request: string, model: string): Promise<string>
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer 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',
+      Authorization: 'Bearer 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',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       model: model,
-      max_tokens: 250,
+      max_tokens: 100,
       messages: [
         {
           role: 'user',
