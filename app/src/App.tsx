@@ -28,7 +28,7 @@ async function getModelResponse(request: string, model: string): Promise<string>
     },
     body: JSON.stringify({
       model: model,
-      max_tokens: 5,
+      max_tokens: 250,
       messages: [
         {
           role: 'user',
@@ -87,7 +87,7 @@ const defaultModels: ChatModel[] = [
     id: 'model5', 
     name: 'Grok 2', 
     icon: 'icon_grok.png', 
-    tokens: { available: 1000, total: 1000, refreshTime: '6h', lastRefresh: new Date().toISOString() },
+    tokens: { available: 5, total: 5, refreshTime: '6h', lastRefresh: new Date().toISOString() },
     description: 'A budget-friendly model from xAI, trained in maximal truth-seeking. Grok 2 excels at debating from all sides of any argument.',
     getResponse: (request: string) => getModelResponse(request, "x-ai/grok-2-1212") 
   },
